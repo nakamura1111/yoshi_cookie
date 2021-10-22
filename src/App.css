@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,191 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
 }
+
+ol, ul {
+  padding-left: 30px;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+.main {
+  width: 80vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.game-myself {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid red;
+}
+.game-opponent {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgreen;
+  border: 1px solid red;
+}
+.game-board {
+  border: 5px solid red;
+}
+.game-info {
+  margin-left: 20px;
+  border: 5px solid red;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.square {
+  border: 1px solid #000;
+  float: left;
+  line-height: 34px;
+  height: 34px;
+  width: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.square:focus {
+  outline: none;
+}
+
+.cursor {
+  background: black;
+}
+
+.cookie-slide-mode {
+  background: brown;
+}
+
+.cookie-0{
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+/* チェック柄 : https://naruhodo.repop.jp/css-background-design/ https://pisuke-code.com/css-checkboard-background/ */
+.cookie-1 {
+  width:90%;
+  height:90%;
+  border-radius: 10%;
+  background-image: linear-gradient(45deg, #fedcbd 27%, transparent 25%), linear-gradient(-45deg, #fedcbd 27%, transparent 25%), linear-gradient(45deg, transparent 75%, #fedcbd 73%), linear-gradient(-45deg, transparent 75%, #fedcbd 73%);
+  background-size: 50% 50%;
+  background-position: 0 0, 0 50%, 50% -50%, -50% 0;
+  background-color: brown;
+}
+/*/ チェック柄 */
+
+/* ハート : https://qiita.com/7note/items/3b640d031e83f82a81c1 */
+.cookie-2 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.cookie-2::before,
+.cookie-2::after {
+  content: "";
+  width: 50%;
+  height: 80%;
+  background: #E0548E;
+  /* background: radial-gradient(#E0548E,#fedcbd); */
+  border-radius: 25px 25px 0 0;
+  display: block;
+  position: absolute;
+}
+.cookie-2::before {
+  transform: rotate(-45deg);
+  left: 14%;
+}
+.cookie-2::after {
+  transform: rotate(45deg);
+  right: 14%;
+}
+/* /ハート */
+
+.cookie-3 {
+  width: 90%;/*幅*/
+	height: 90%;/*高さ*/
+	border-radius: 50%;/*角丸*/
+  background: radial-gradient(transparent 30%, #fedcbd 30% );
+}
+.cookie-4 {
+  width: 90%;/*幅*/
+	height: 90%;/*高さ*/
+	border-radius: 50%;/*角丸*/
+  background: radial-gradient(lightgreen 45%, #fedcbd 45% );
+}
+.cookie-5 {
+  width: 90%;/*幅*/
+	height: 90%;/*高さ*/
+	border-radius: 50%;/*角丸*/
+  background: radial-gradient(orange 45%, #fedcbd 45% );
+}
+.cookie-6 {
+  width: 90%;/*幅*/
+	height: 90%;/*高さ*/
+	border-radius: 50%;/*角丸*/
+  background: red;
+}
+/* https://zenn.dev/nus3/articles/dceb1ba163c62c0b152d */
+.cookies-disappear-row {
+  animation-name: slideRight;
+  animation-duration: 1s; 
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  /* animation-fill-mode: forwards;  */
+}
+@keyframes slideRight {
+  from {
+    transform: translateX(0);
+    /* opacity: 1; */
+  }
+  to {
+    transform: translateX(-100%);
+    /* opacity: 0; */
+  }
+}
+.cookies-disappear-column {
+  animation-name: slideDown; 
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  /* animation-fill-mode: forwards;  */
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    /* opacity: 1; */
+  }
+  to {
+    transform: translateY(100%);
+    /* opacity: 0; */
+  }
+}
+
