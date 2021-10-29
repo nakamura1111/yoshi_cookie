@@ -1,7 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import ReactCSSTransitionGroup from 'react-transition-group';
+import React, {  } from 'react';
 
 import PlayerPresentation from './operator/Player';
 import CpuPresentation from './operator/Cpu';

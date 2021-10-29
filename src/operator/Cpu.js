@@ -1,9 +1,12 @@
 // import logo from './logo.svg';
 import './Cpu.css';
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import ReactCSSTransitionGroup from 'react-transition-group';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import Board from '../element/Board';
+
+const nRow = 5;
+const nColumn = 5;
+const kCookie = 6;
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -13,10 +16,7 @@ function getRandomInt(min, max) {
 
 function CpuPresentation (props) {
   console.log("cpu component¥n----------");
-  const nRow = 5;
-  const nColumn = 5;
-  const kCookie = 6;
-
+  // console.log(props);
   const [currentPos, setCurrentPos] = useState([2,2]);
   const [table, setTable] = useState([]);
   // const [cookieSlideFlg, setCookieSlideFlg] = useState(0);
@@ -44,8 +44,7 @@ function CpuPresentation (props) {
     });
   }, []);
 
-  const operationRandom = useCallback(() => {
-    const ope = getRandomInt(1, 5);
+  const operation = useCallback((ope=5) => {
     if (state==='moveCursor') {
       switch (ope) {
         case 1:
@@ -89,11 +88,11 @@ function CpuPresentation (props) {
     if (ope === 1) {
       setCurrentPos(currentPos=>[(currentPos[0]-1+nRow)%nRow, currentPos[1]]);
     } else if (ope === 2) {
-      setCurrentPos(currentPos=>[currentPos[0], (currentPos[1]-1+nRow)%nRow]);
+      setCurrentPos(currentPos=>[currentPos[0], (currentPos[1]-1+nColumn)%nColumn]);
     } else if (ope === 3) {
       setCurrentPos(currentPos=>[(currentPos[0]+1)%nRow, currentPos[1]]);
     } else if (ope === 4) {
-      setCurrentPos(currentPos=>[currentPos[0], (currentPos[1]+1)%nRow]);
+      setCurrentPos(currentPos=>[currentPos[0], (currentPos[1]+1)%nColumn]);
     }
   }, []);
 
@@ -281,7 +280,6 @@ function CpuPresentation (props) {
   }, []);
 
   useEffect(()=>{
-    let interval = null;
     switch(state){
       case 'init':
         setTable(initTable());
@@ -289,15 +287,9 @@ function CpuPresentation (props) {
         setState('moveCursor');
         break;
       case 'slideCookies':
-        interval = setInterval(()=>{
-          operationRandom();
-        }, 1000);
-        return () => {clearInterval(interval)};
+        break;
       case 'moveCursor':
-        interval = setInterval(()=>{
-          operationRandom();
-        }, 1000);
-        return () => {clearInterval(interval)};
+        break;
       case 'animDisappear':
         slideOutCookies();
         sleep(1000).then((res)=>{setState('aligned');});
@@ -320,7 +312,40 @@ function CpuPresentation (props) {
         console.log('state error');
         break;
     }
-  }, [state]);
+  }, [state, props.values.nextOpe]);
+
+  useEffect(()=>{
+    let interval = null;
+    switch(state){
+      case 'init':
+        props.methods.resetOpe();
+        props.methods.observeBoard(table);
+        break;
+      case 'slideCookies':
+        interval = setInterval(()=>{
+          operation(props.values.nextOpe['ope']);
+        }, 1000);
+        return () => {clearInterval(interval)};
+      case 'moveCursor':
+        interval = setInterval(()=>{
+          operation(props.values.nextOpe['ope']);
+        }, 1000);
+        return () => {clearInterval(interval)};
+      case 'animDisappear':
+        break;
+      case 'aligned':
+        break;
+      case 'gather':
+        break;
+      case 'fill':
+        props.methods.resetOpe();
+        props.methods.observeBoard(table);
+        break;
+      default:
+        console.log('state error');
+        break;
+    }
+  }, [state, table, props.values.nextOpe]);
 
   useEffect(()=>{
     console.log(state);
@@ -339,4 +364,68 @@ function CpuPresentation (props) {
   );
 }
 
-export default CpuPresentation;
+function CpuContainer () {
+  // const [opeOrder, setOpeOrder] = useState([]);
+  const opeOrder = useRef([]);
+  const [nextOpe, setNextOpe] = useState({ope: 0});
+
+  const observeBoard = useCallback((table) => {
+    let count = Array(kCookie+1).fill(0);
+    table.map( (row) => {
+      row.map( (cell) => {
+        count[cell[2]]++;
+      })
+    })
+    console.log(count);
+  }, []);
+
+  const decideOperationOrder = useCallback(()=>{
+
+  }, []);
+
+  const operate = useCallback(()=>{
+    if (opeOrder.current.length>5) {
+      // const opeOrder_tmp = opeOrder;
+      // const nowOpe = nextOpe;
+      // const next = opeOrder_tmp[0];
+      // setOpeOrder(opeOrder_tmp.slice(1));
+      // opeOrder.current = opeOrder_tmp.slice(1);
+
+      let next = opeOrder.current[0];
+      opeOrder.current = opeOrder.current.slice(1);
+
+      setNextOpe({ope: next});
+    }
+  }, [/*opeOrder,*/ nextOpe]);
+
+  const appendOpe = useCallback(()=>{
+    // setOpeOrder([...opeOrder, getRandomInt(1, 5)]);
+    // opeOrder.current = [...opeOrder.current, getRandomInt(1, 5)];
+  }, [/*opeOrder*/ nextOpe]);
+
+  const resetOpe = useCallback(()=>{
+    opeOrder.current = [];
+  }, []);
+
+  useEffect(()=>{
+    const interval = setInterval( () => {
+      // if (nextOpe.ope===0) {
+      //   return;
+      // }
+      console.log(opeOrder);
+      console.log(nextOpe);
+      appendOpe();
+      operate();
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+      // setNextOpe({ope: 0});
+    }
+  }, [appendOpe, operate]);
+
+  return (
+    <CpuPresentation values={{nextOpe: nextOpe}} methods={{observeBoard: observeBoard, resetOpe: resetOpe}}/>
+  );
+}
+
+export default CpuContainer;

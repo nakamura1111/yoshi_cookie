@@ -1,7 +1,6 @@
 // import logo from './logo.svg';
 import './Board.css';
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import ReactCSSTransitionGroup from 'react-transition-group';
+import React, { } from 'react';
 
 function Cookie(props) {
   // console.log("Cookie component"+props.value+"¥n----------");
