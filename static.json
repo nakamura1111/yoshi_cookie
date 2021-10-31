@@ -1,8 +1,4 @@
 {
-  "root": "build/",
-  "routes": {
-    "/**": "index.js"
-  },
   "basic_auth": true,
   "https_only": true
 }
