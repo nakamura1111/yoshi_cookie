@@ -1,10 +1,8 @@
 {
-  {
-    "root": "server/",
-    "routes": {
-      "/**": "server.js"
-    },
-    "basic_auth": true,
-    "https_only": true
-  }
+  "root": "server/",
+  "routes": {
+    "/**": "server.js"
+  },
+  "basic_auth": true,
+  "https_only": true
 }
