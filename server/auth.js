@@ -13,4 +13,5 @@ module.exports = (request, response, next) => {
   }
 
   response.set('WWW-Authenticate', 'Basic realm="example"')
-  return response.status(401).send()}
+  return response.status(401).send()
+}
